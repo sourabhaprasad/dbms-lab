@@ -89,7 +89,6 @@ INSERT INTO IAMARKS (USN, SUBCODE, SSID, TEST1, TEST2, TEST3, FINALIA) VALUES
 ('1GA22AI105', 'CS201', 'SSID5', 19, 20, 18, 20),
 ('1GA22AI105', 'MA201', 'SSID5', 18, 17, 19, 20);
 
-
 DESC STUDENT;
 DESC SEMSEC;
 DESC CLASS;
@@ -102,13 +101,14 @@ SELECT * FROM CLASS;
 SELECT * FROM SUBJECT;
 SELECT * FROM IAMARKS;
 
-#Query 1
+-- Query 1: List all the student details studying in fourth semester ‘C’ section.
 SELECT S.*, SS.SEM, SS.SEC
 FROM STUDENT S
 JOIN CLASS C ON S.USN = C.USN
 JOIN SEMSEC SS ON SS.SSID = C.SSID
 WHERE SS.SEM = 4 AND SS.SEC = 'C';
-#Query 2
+
+-- Query 2: Compute the total number of male and female students in each semester and in each section.
 SELECT SS.SEM, SS.SEC, 
        SUM(CASE WHEN S.GENDER = 'M' THEN 1 ELSE 0 END) AS Male_Count,
        SUM(CASE WHEN S.GENDER = 'F' THEN 1 ELSE 0 END) AS Female_Count
@@ -117,7 +117,7 @@ JOIN CLASS C ON S.USN = C.USN
 JOIN SEMSEC SS ON SS.SSID = C.SSID
 GROUP BY SS.SEM, SS.SEC;
 
-# Query 3
+-- Query 3: Create a view of Test1 marks of student USN 1GA22AI101 in all subjects.
 CREATE VIEW Test1_Marks AS
 SELECT IAM.USN, IAM.SUBCODE, IAM.TEST1
 FROM IAMARKS IAM
@@ -136,13 +136,12 @@ INSERT INTO CLASS (USN, SSID) VALUES
 
 -- Now insert the IAMARKS record
 INSERT INTO IAMARKS (USN, SUBCODE, SSID, TEST1, TEST2, TEST3, FINALIA) VALUES
-('1GA22AI106', 'CS201', 'SSID6', 15, 16, 14, 14), -- This should now work
-('1GA22AI106', 'CS201', 'SSID6', 08, 08, 08, 08); -- This should now work
+('1GA22AI106', 'CS201', 'SSID6', 15, 16, 14, 14);
 
 INSERT INTO IAMARKS (USN, SUBCODE, SSID, TEST1, TEST2, TEST3, FINALIA) VALUES
 ('1GA22AI106', 'MA201', 'SSID6', 08, 08, 08, 08); 
 
-# Query 4
+-- Query 4: Calculate the FinalIA (average of best two test marks) and update the corresponding table for all students.
 SELECT S.USN, S.SNAME, 
        CASE 
            WHEN IAM.FINALIA BETWEEN 17 AND 20 THEN 'Outstanding'
